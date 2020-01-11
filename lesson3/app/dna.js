@@ -32,10 +32,13 @@ function validation(data) {
     return true;
 }
 
-let initial = prompt("Enter DNA string");
-
-while(!validation(initial)) {
-    console.log("Wrong data!!!");
-    initial = prompt("Enter DNA string");
+function dnaMain() {
+    let initial = prompt("Enter DNA string").toUpperCase();
+    while(!validation(initial)) {
+        console.log("Wrong data!!!");
+        initial = prompt("Enter DNA string");
+    }
+    alert(get_complementary(initial));
 }
-console.log(get_complementary(initial));
+
+dnaMain();

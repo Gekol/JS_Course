@@ -1,9 +1,10 @@
-let number = prompt("Введите число"),
-    reversed = "";
+function reverseString(string) {
+    return string.split("").reverse().join("");
+}
 
-reversed += number % 10;
-number = Math.floor(number / 10);
-reversed += number % 10;
-number = Math.floor(number / 10);
-reversed += number % 10;
-alert(reversed);
+function reverseMain() {
+    let string = prompt("Введите строку");
+    alert(reverseString(string));
+}
+
+reverseMain();

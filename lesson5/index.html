@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function validateInt(num, information) {
+            let numexp = /^\d+$/;
+            while (!num.match(numexp)) {
+                num = prompt(information);
+            }
+            return num;
+        }
+    </script>
+    <script src="app/extent.js"></script>
+    <script src="app/maxDivisor.js"></script>
+    <script src="app/biggestDigit.js"></script>
+    <script src="app/primary.js"></script>
+    <script src="app/divisors.js"></script>
+    <script src="app/fibonacci.js"></script>
+</body>
+</html>

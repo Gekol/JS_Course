@@ -6,6 +6,16 @@
     <title>Document</title>
 </head>
 <body>
+    <script>
+        "use strict";
+        let numexp = /^\d+(\.\d)?\d?$/
+        function validateNum(input_sentence, num="") {
+            while (num.match(numexp) == null) {
+                num = prompt(input_sentence);
+            }
+            return num;
+        }
+    </script>
     <script src="app/name.js"></script>
     <script src="app/year.js"></script>
     <script src="app/square.js"></script>

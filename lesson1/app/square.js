@@ -1,3 +1,10 @@
-let side_length = prompt("Введите длину стороны квадрата");
+function squarePerimeter(side_length) {
+    alert(`Периметр равен ${4*side_length} см.`);
+}
 
-alert(`Периметр равен ${4*side_length} см.`);
+function squareMain() {
+    let side_length = validateNum("Введите длину стороны квадрата");
+    squarePerimeter(side_length);
+}
+
+squareMain();

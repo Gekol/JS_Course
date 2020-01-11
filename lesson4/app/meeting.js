@@ -1,60 +1,52 @@
-let room_number = "",
-    rooms = [],
-    numexp = /\d+/,
-    check = room_number.match(numexp);
-
-while (!check || check[0] != room_number) {
-    room_number = prompt("Enter the number of rooms");
-    check = room_number.match(numexp);
-}
-
-for(let i = 0; i < room_number; i++) {
-    let taken = "A", chair_number = "";
-    let xexp = /X+/;
-
-    check = taken.match(xexp);
-    while(!check || check[0] != taken) {
-        taken = prompt("Enter the number of taken chairs");
-        if (taken == "") {
-            break;
-        }
-        check = taken.match(xexp);
-    }
-
-    check = chair_number.match(numexp);
-    while(!check || check[0] != chair_number) {
-        chair_number = prompt("Enter the number of chairs in the current room");
-        check = chair_number.match(numexp);
-    }
-    rooms[i] = [taken.length, chair_number];
-    if (rooms[i][0] > rooms[i][1]) {
-        rooms[i][0] = rooms[i][1];
-    }
-}
-
-let chair_needed = "";
-check = chair_needed.match(numexp);
-while(!check || check[0] != chair_needed) {
-    chair_needed = prompt("Enter the number of chairs needed");
-    check = chair_needed.match(numexp);
-}
-if (chair_needed == 0) {
-    console.log("Game On");
-} else {
-    rooms = rooms.map((element) => element[1] - element[0]);
-    let total = rooms.reduce((accumulator, element) => accumulator + element);
-    if (total >= chair_needed) {
-        let res = [];
-        for(let i = 0; i < rooms.length; i++) {
-            res[i] = (rooms[i] < chair_needed)?rooms[i]:chair_needed;
-            chair_needed -= rooms[i];
-            if (!chair_needed) {
+function meetingMain() {
+    let data = getData();
+    let rooms = data[0], chairsNeeded = data[1];
+    if (chairsNeeded == 0) {
+        alert("Game On");
+    } else {
+        let total = 0, res = [];
+        for(let i of rooms) {
+            if (chairsNeeded != 0) {
+                let chairsTaken = (chairsNeeded>i)?i:chairsNeeded;
+                total += chairsTaken;
+                chairsNeeded -= chairsTaken;
+                res.push(chairsTaken);
+            } else {
                 break;
             }
         }
-        console.log(res);
-    } else {
-        console.log("Not enough!");
+        if (chairsNeeded == 0) {
+            alert(res);
+        }
+        else {
+            alert("Not enough!");
+        }
     }
-
 }
+
+function getPeople(people="a") {
+    let peoplexp = /^X*$/;
+    while(!people.match(peoplexp)) {
+        people = prompt("Enter the number of people");
+    }
+    return people;
+}
+
+function getRooms(number) {
+    let rooms = [];
+    for(let i = 0; i < number; i++) {
+        let people = getPeople();
+        let chairs = getInt("Enter the number of chairs in the room");
+        rooms[i] = (chairs > people.length)?chairs - people.length:0;
+    }
+    return rooms;
+}
+
+function getData() {
+    let roomsNumber = getInt("Enter the number of the rooms");
+    let rooms = getRooms(roomsNumber);
+    let chairsNeeded = getInt("Enter the number of chairs needed");
+    return [rooms, chairsNeeded];
+}
+
+meetingMain();

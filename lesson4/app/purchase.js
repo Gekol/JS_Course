@@ -1,53 +1,67 @@
-let purchases = [],
-    active = true,
-    countregexp = /\d+/;
+function purchaseMain() {
+    let active = true,
+        purchases = [];
 
-while(active) {
-    let command = prompt("Enter the command(add/buy/show/exit)");
-    switch(command) {
-        case "add": {
-            let name = prompt("Enter the name of the item");
-            let count = prompt("Enter the number of items");
-            let check = count.match(countregexp);
-            while(!check || check[0] != count) {
-                count = prompt("Enter the number of items");
+    while (active) {
+        let command = prompt("Enter command(add/show/buy/exit)");
+        switch (command) {
+            case "add": {
+                add(purchases);
+                break;
             }
-            count = parseInt(count);
-            let bought = confirm("Have you bought the items?");
-            let added = false, new_object = {"name": name, "count": count, "bought": bought}
-            purchases = purchases.map((elem, i, link) => {
-                if (!added) {
-                    if (elem["name"] == name) {
-                        elem["count"] += count;
-                        elem["bought"] = bought;
-                        added = true;
-                    }
-                }
-                return elem;
-            });
-            if (!added) {
-                purchases.push(new_object);
+            case "show": {
+                show(purchases);
+                break;
             }
-            break;
-        }
-        case "buy": {
-            let name = prompt("Enter the name of the item");
-            purchases.find((element) => element["name"] == name)["bought"] = true;
-            break;
-        }
-        case "show": {
-            let bought_elements = purchases.filter((element) => element["bought"] == true);
-            let unbought_elements = purchases.filter((element) => element["bought"] == false);
-            unbought_elements.forEach((elem) => console.log(`${elem["name"]} - ${elem["count"]}`));
-            bought_elements.forEach((elem) => console.log(`${elem["name"]} - ${elem["count"]}`));
-            break;
-        }
-        case "exit": {
-            active = false;
-            break;
-        }
-        default: {
-            console.log("Wrong command!!!");
+            case "buy": {
+                buy(purchases);
+                break;
+            }
+            case "exit": {
+                active = false;
+                break;
+            }
+            default: {
+                alert("Wrong command!!!");
+                break;
+            }
         }
     }
 }
+
+function add(purchases) {
+    let name = prompt("Enter the name of the item"),
+        count = getInt("Enter the number of the items"),
+        bought = confirm("Did you buy the item?");
+    let taken = purchases.findIndex((element) => element.name == name);
+    if (taken != -1) {
+        purchases[taken].count += count;
+        purchases[taken].bought = bought;
+    } else {
+        purchases.push({
+            name: name,
+            count: count,
+            bought: bought
+        });
+    }
+    
+}
+
+function show(purchases) {
+    let sortedPurchases = purchases.sort((a, b) => a.bought - b.bought);
+    sortedPurchases.forEach((element) =>
+        console.log(`${element.name}, number - ${element.count}, bought - ${element.bought}`));
+    console.log("");
+}
+
+function buy(purchases) {
+    let name = prompt("Enter the name of the item"),
+        taken = purchases.findIndex((element) => element.name == name);
+    if (taken != -1) {
+        purchases[taken].bought = true;
+    } else {
+        alert(`There is no ${name} in the purchase list!!!`);
+    }
+}
+
+purchaseMain();

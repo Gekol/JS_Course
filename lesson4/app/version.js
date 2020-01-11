@@ -1,26 +1,26 @@
-let version,
-    regexp = /\d+[.\d]*/,
-    check = null;
-
-while (!check || check[0] != version) {
-    version = prompt("Enter the version");
-    check = version.match(regexp);
+function versionMain() {
+    let version = getVersion("Enter the current version");
+    let nums = version.split("."),
+        added = false,
+        index = nums.length - 1;
+    while (!added) {
+        if (index != 0 && nums[index] == 9) {
+            nums[index] = 0;
+            index--;
+        } else {
+            nums[index]++;
+            added = true;
+        }
+    }
+    alert(nums.join("."));
 }
 
-
-let nums = version.split("."),
-    added = false;
-
-nums = nums.reverse();
-nums.map((element, index, link) => {
-    if (!added) {
-        link[index]++;
-        added = true;
+function getVersion(input, num="") {
+    let versionregexp = /^\d+(\.\d)*$/;
+    while (!num.match(versionregexp)) {
+        num = prompt(input);
     }
-    if (link[index] >= 10 && index != link.length - 1) {
-        link[index] = 0;
-        added = false;
-    }
-});
-nums.reverse();
-console.log(nums.join("."));
+    return num;
+}
+
+versionMain();
