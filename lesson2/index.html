@@ -6,9 +6,37 @@
     <title>Document</title>
 </head>
 <body>
+    <script>
+        'use strict';
+        let numexp = /^\d+(\.\d)?\d?$/;
+        let intexp = /^\d+$/;
+
+        function validateFloat(input, num = "") {
+            while (!num.match(numexp)) {
+                num = prompt(input);
+            }
+            return num;
+        }
+
+        function validateInt(sentence, num="") {
+            while(!(num.match(intexp))) {
+                num = prompt(sentence);
+            }
+            return num;
+        }
+    </script>
     <script src="app/repair.js"></script>
     <script src="app/dust.js"></script>
     <script src="app/ticket.js"></script>
-    <script src="app/main.js"></script>
+    <script src="app/miniTasks/age.js"></script>
+    <script src="app/miniTasks/special.js"></script>
+    <script src="app/miniTasks/repeat.js"></script>
+    <script src="app/miniTasks/leap.js"></script>
+    <script src="app/miniTasks/palindrome.js"></script>
+    <script src="app/miniTasks/converter.js"></script>
+    <script src="app/miniTasks/discount.js"></script>
+    <script src="app/miniTasks/shapes.js"></script>
+    <script src="app/miniTasks/questions.js"></script>
+    <script src="app/miniTasks/nextDate.js"></script>
 </body>
 </html>

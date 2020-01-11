@@ -13,7 +13,7 @@ function divisors(num) {
 }
 
 function divisorsMain() {
-    let num = validate_data("", "Enter the number");
+    let num = validateInt("", "Enter the number");
     alert(divisors(num));
 }
 

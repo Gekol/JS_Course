@@ -7,7 +7,7 @@
 </head>
 <body>
     <script>
-        function validate_data(num, information) {
+        function validateInt(num, information) {
             let numexp = /^\d+$/;
             while (!num.match(numexp)) {
                 num = prompt(information);

@@ -12,5 +12,9 @@ function sort_sentence(sentence) {
     return nums.join(" ");
 }
 
-sentence = prompt("Enter a sentence");
-console.log(sort_sentence(sentence));
+function orderMain() {
+    sentence = prompt("Enter a sentence");
+    alert(sort_sentence(sentence));
+}
+
+orderMain();

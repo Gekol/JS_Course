@@ -8,8 +8,8 @@ function pow(num, extent) {
 }
 
 function powMain() {
-    let num = validate_data("", "Enter the number");
-    let extent = validate_data("", "Enter the extent");
+    let num = validateInt("", "Enter the number");
+    let extent = validateInt("", "Enter the extent");
     alert(pow(num, extent));
 }
 

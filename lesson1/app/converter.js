@@ -1,4 +1,11 @@
-let rate = .9;
+function convert(dollars, rate) {
+    alert(`В евро: ${dollars * rate}`);
+}
 
-let dollars = prompt("Введите количество долларов");
-alert(`В евро: ${dollars * rate}`);
+function converterMain() {
+    const rate = .9;
+    let dollars = validateNum("Введите количество долларов");
+    convert(dollars, rate);
+}
+
+converterMain();

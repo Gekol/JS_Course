@@ -6,11 +6,29 @@
     <title>Lesson 4</title>
 </head>
 <body>
-    <!-- <script src="app/meeting.js"></script> -->
-    <!-- <script src="app/version.js"></script> -->
-    <!-- <script src="app/tic-tac-toe.js"></script> -->
-    <!-- <script src="app/purchase.js"></script> -->
-    <!-- <script src="app/cheque.js"></script> -->
+    <script>
+        'use strict'
+        let intexp = /^\d+$/;
+        function getInt(input, num="") {
+            while(!num.match(intexp)) {
+                num = prompt(input);
+            }
+            return +num;
+        }
+
+        let floatexp = /^\d+(\.\d)?\d?$/;
+        function getNum(input, num="") {
+            while(!num.match(floatexp)) {
+                num = prompt(input);
+            }
+            return +num;
+        }
+    </script>
+    <script src="app/meeting.js"></script>
+    <script src="app/version.js"></script>
+    <script src="app/tic-tac-toe.js"></script>
+    <script src="app/purchase.js"></script>
+    <script src="app/cheque.js"></script>
     <script src="app/auditory.js"></script>
 </body>
 </html>

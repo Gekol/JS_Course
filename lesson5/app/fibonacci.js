@@ -8,7 +8,7 @@ function fibonacci(index) {
 }
 
 function fibonacciMain() {
-    let index = validate_data("", "Enter the index");
+    let index = validateInt("", "Enter the index");
     alert(fibonacci(index));
 }
 

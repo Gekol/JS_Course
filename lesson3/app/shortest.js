@@ -1,5 +1,3 @@
-let sentence = prompt("Enter a sentence");
-
 function shortest_word(sentence) {
     let words = sentence.split(" "), shortest = words[0].length, current_length;
     for(let i = 1; i < words.length; i++) {
@@ -11,4 +9,9 @@ function shortest_word(sentence) {
     return shortest;
 }
 
-console.log(shortest_word(sentence));
+function shortestMain() {
+    let sentence = prompt("Enter a sentence");
+    alert(shortest_word(sentence));
+}
+
+shortestMain();

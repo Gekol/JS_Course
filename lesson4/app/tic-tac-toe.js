@@ -1,57 +1,74 @@
-let board = [[], [], []];
-
-let game_unfinished = false;
-
-function check_rows(board, player) {
-    let row1 = board[0].filter(elem => elem == player);
-    let row2 = board[1].filter(elem => elem == player);
-    let row3 = board[2].filter(elem => elem == player);
-    return row1.length == 3 || row2.length == 3 || row3.length == 3;
-}
-
-function check_cols(board, player) {
-    let col1 = board.map((elem, i, link) => link[i][0]).filter(elem => elem == player);
-    let col2 = board.map((elem, i, link) => link[i][1]).filter(elem => elem == player);
-    let col3 = board.map((elem, i, link) => link[i][2]).filter(elem => elem == player);
-    return col1.length == 3 || col2.length == 3 || col3.length == 3;
-}
-
-function check_diagonals(board, player) {
-    let diag1 = board.map((elem, i, link) => link[i][i]).filter(elem => elem == player);
-    let diag2 = board.map((elem, i, link) => link[i][2 - i]).filter(elem => elem == player);
-    return diag1.length == 3 || diag2.length == 3;
-}
-
-function check_victory(board, player) {
-    return check_rows(board, player) || check_cols(board, player) || check_diagonals(board, player);
-}
-
-for(let i = 0; i < 3; i++) {
-    for(let j = 0; j < 3; j++) {
-        let current = "";
-        while (current != "0" && current != "1" && current != "2") {
-            current = prompt("Enter the value(0/1/2)");
-        }
-        board[i][j] = current;
-        game_unfinished = game_unfinished || current == "0";
-    }
-}
-
-if (game_unfinished) {
-    console.log(-1);
-} else {
-    switch(true) {
-        case check_victory(board, 1): {
-            console.log(1);
+function gameMain() {
+    let board = getBoard();
+    let player1 = checkVictory(board, 1),
+        player2 = checkVictory(board, 2);
+    switch (true) {
+        case player1: {
+            alert(1);
             break;
         }
-        case check_victory(board, 2): {
-            console.log(2);
+        case player2: {
+            alert(2);
+            break;
+        }
+        case (!(player1 || player2) && checkZeroes(board)): {
+            alert(-1);
             break;
         }
         default: {
-            console.log(0);
+            alert(0);
             break;
         }
     }
 }
+
+function getCell(cell="") {
+    while(cell != "0" && cell != "1" && cell != "2") {
+        cell = prompt("Enter the cell data");
+    }
+    return cell;
+}
+
+function getBoard() {
+    let board = [[], [], []];
+    for(let row = 0; row < 3; row++) {
+        for(let col = 0; col < 3; col++) {
+            board[row][col] = getCell();
+        }
+    }
+    return board;
+}
+
+function checkRows(board, player) {
+    return board[0].every((elem) => elem == player) ||
+           board[1].every((elem) => elem == player) ||
+           board[2].every((elem) => elem == player);
+}
+
+function checkColumns(board, player) {
+    let col1 = board.map((elem) => elem[0]),
+        col2 = board.map((elem) => elem[1]),
+        col3 = board.map((elem) => elem[2]);
+    return col1.every((elem) => elem == player) ||
+           col2.every((elem) => elem == player) ||
+           col3.every((elem) => elem == player);
+}
+
+function checkDiagonals(board, player) {
+    let diag1 = board.map((elem, index) => elem[index]),
+        diag2 = board.map((elem, index) => elem[2 - index]);
+    return diag1.every((elem) => elem == player) ||
+           diag2.every((elem) => elem == player);
+}
+
+function checkVictory(board, player) {
+    return checkRows(board, player) || checkColumns(board, player) || checkDiagonals(board, player);
+}
+
+function checkZeroes(board) {
+    return board[0].some((element) => element == 0) ||
+           board[1].some((element) => element == 0) || 
+           board[2].some((element) => element == 0);
+}
+
+gameMain();

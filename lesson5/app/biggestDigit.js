@@ -10,7 +10,7 @@ function biggestDigit(num) {
 }
 
 function biggestMain() {
-    let num = validate_data("", "Enter the num");
+    let num = validateInt("", "Enter the num");
     alert(biggestDigit(num));
 }
 

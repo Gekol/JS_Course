@@ -11,7 +11,7 @@ function checkPrimary(num, divisor=2) {
 }
 
 function primaryMain() {
-    let num = validate_data("", "Enter the number");
+    let num = validateInt("", "Enter the number");
     alert(checkPrimary(num));
 }
 

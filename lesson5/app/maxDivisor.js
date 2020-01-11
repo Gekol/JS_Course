@@ -12,7 +12,7 @@ function maxDivisor(a, b) {
 }
 
 function maxDivisorMain() {
-    let a = validate_data("", "Enter the number"), b = validate_data("", "Enter the number");
+    let a = validateInt("", "Enter the number"), b = validateInt("", "Enter the number");
     alert(maxDivisor(a, b));
 }
 
