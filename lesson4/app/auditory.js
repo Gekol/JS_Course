@@ -44,9 +44,9 @@ function add(auditories) {
     let index = auditories.findIndex((elem) => elem.name == name && elem.faculty == faculty);
     if (index == -1 || auditories.length == 0) {
         auditories.push({
-            name: name, 
-            chairs: chairs,
-            faculty: faculty
+            name, 
+            chairs,
+            faculty
         });
     } else {
         auditories[index].chairs = chairs;

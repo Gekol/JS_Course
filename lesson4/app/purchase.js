@@ -39,9 +39,9 @@ function add(purchases) {
         purchases[taken].bought = bought;
     } else {
         purchases.push({
-            name: name,
-            count: count,
-            bought: bought
+            name,
+            count,
+            bought
         });
     }
     

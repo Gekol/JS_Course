@@ -42,9 +42,9 @@ function add(items) {
         price = getNum("Enter the price per item");
 
     items.push({
-        name: name,
-        number: number,
-        price: price
+        name,
+        number,
+        price
     });
 }
 
