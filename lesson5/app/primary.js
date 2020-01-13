@@ -1,11 +1,11 @@
 'use strict'
 
 function checkPrimary(num, divisor=2) {
-    if (divisor == Math.trunc(num / 2) || num == 1) {
-        return "A primary number!!!";
-    }
     if (!(num % divisor)) {
         return "Not a primary number!!!";
+    }    
+    if (divisor == Math.trunc(num / 2) || num == 1) {
+        return "A primary number!!!";
     }
     return checkPrimary(num, ++divisor);
 }
