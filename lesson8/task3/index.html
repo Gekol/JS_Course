@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #main {
+            display: flex;
+            justify-content: center;
+        }
+
+        #content {
+            background-color: blanchedalmond;
+            display: inline-flex;
+            align-content: space-between;
+            padding: 1%;
+        }
+
+        #lights {
+            display: flex;
+            border: 3px gray solid;
+            justify-content: space-between;
+            border-radius: 15%;
+        }
+
+        #lights * {
+            display: flex;
+            align-items: center;
+        }
+
+        .circle {
+            background-color: gray;
+            border-radius: 100%;
+            height: 100px;
+            width: 100px;
+            margin: 10px;
+        }
+
+        #next {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id = "main">
+        <div id = "content">
+            <div id = "lights">
+                <div class = "circle"></div>
+                <div class = "circle"></div>
+                <div class = "circle"></div>
+            </div>
+            <button id="next">NEXT</button>
+        </div>
+    </div>
+    <hr />
+    <script src="app/lightChange.js"></script>
+</body>
+</html>

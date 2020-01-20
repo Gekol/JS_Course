@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #modal {
+            display: flex;
+            justify-content: center;
+            visibility: hidden;
+        }
+
+        #modal-content {
+            width: 15%;
+            padding: 1%;
+            text-align: center;
+            background-color: turquoise;
+        }
+    </style>
+</head>
+<body>
+    <button id="openModal">Open Modal</button>
+    <div id="modal">
+        <div id="modal-content">
+            <h4>Hello from Modal Window!</h4>
+            <button id="closeModal">Close</button>
+        </div>
+    </div>
+    <script src="app/modal.js"></script>
+</body>
+</html>
