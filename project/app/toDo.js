@@ -6,7 +6,7 @@ addBtn.addEventListener("click", addEntry);
 drawBlocks();
 
 function getBiggestId() {
-    let lastElem = entries[entries.length - 1];
+    let lastElem = entries[0];
     return lastElem?+lastElem.id:-1;
 }
 
@@ -42,6 +42,7 @@ function createElemBlock(elem, entry) {
     for (let comment of entry.comments) {
         let commentParagraph = document.createElement("p");
         commentParagraph.innerText = comment;
+        comments.appendChild(commentParagraph);
     }
     elem.appendChild(comments);
     elem.appendChild(document.createElement("button"));
@@ -90,19 +91,30 @@ function makeForm(entry) {
 
 function showComments(event) {
     let id = event.target.id.slice(7);
-    console.log(id);
-    document.querySelector("#show" + id).style.display = "block";
+    document.querySelector("#com" + id).style.display = "block";
+    event.target.innerText = "Hide comments";
+    event.target.id = "hide" + id;
+    event.target.removeEventListener("click", showComments);
+    event.target.addEventListener("click", hideComments);
+}
+
+function hideComments(event) {
+    let id = event.target.id.slice(4);
+    document.querySelector("#com" + id).style.display = "none";
+    event.target.innerText = "Show comments";
+    event.target.id = "showBtn" + id;
+    event.target.removeEventListener("click", hideComments);
+    event.target.addEventListener("click", showComments);
 }
 
 function addComment(event) {
     let id = event.target.id,
-        index = id.slice(3);
+        index = id.slice(3),
         commentText = document.querySelector("#comfield" + index).value,
-        entry = entries[entries.findIndex(elem => elem.id=index)];
+        entry = entries[entries.findIndex(elem => elem.id == index)];
     if (commentText != "") {
         entry.comments.unshift(commentText);
         localStorage.setItem("entries", JSON.stringify(entries));
-        alert(commentText);
     } else {
         alert("You must enter some text to leave comment!!!")
     }
@@ -120,19 +132,17 @@ function addEntry() {
     entries.unshift(newEntry);
     biggestId++;
     localStorage.setItem("entries", JSON.stringify(entries));
-    addEntryBlock(newEntry);
+    drawBlocks();
 }
 
 function showCommentForm(event) {
     let elemId = event.target.id.slice(6);
-    console.log(elemId);
-    console.log(document.querySelector("#form" + elemId));
     document.querySelector("#form" + elemId).style.display = "block";
     // entries[index].childNodes[2].style.display = "block";
 }
 
 function deleteElement(event) {
-    let elemId = event.target.id.slice(6),
+    let elemId = event.target.id.slice(3),
         index = entries.findIndex(elem => elem.id==elemId);
     entries.splice(index, 1);
     localStorage.setItem("entries", JSON.stringify(entries));
