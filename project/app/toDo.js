@@ -37,12 +37,21 @@ function createElemBlock(elem, entry) {
     elem.childNodes[2].appendChild(makeShowButton(entry));
     let comments = document.createElement("div")
     comments.style.display = "none";
-    comments.id = "com" + entry.id;
+    comments.id = "com_" + entry.id;
+    let index = 0;
     elem.appendChild(makeForm(entry));
     for (let comment of entry.comments) {
-        let commentParagraph = document.createElement("p");
-        commentParagraph.innerText = comment;
-        comments.appendChild(commentParagraph);
+        let commentBlock = document.createElement("div");
+        let commentText = document.createElement("span");
+        commentText.innerText = comment;
+        let delBtn = document.createElement("button");
+        delBtn.innerText = "Delete";
+        delBtn.id = "comDel_" + entry.id + "_" + index;
+        delBtn.addEventListener("click", deleteComment);
+        commentBlock.appendChild(commentText);
+        commentBlock.appendChild(delBtn);
+        comments.appendChild(commentBlock);
+        index++;
     }
     elem.appendChild(comments);
     elem.appendChild(document.createElement("button"));
@@ -50,15 +59,23 @@ function createElemBlock(elem, entry) {
     return elem
 }
 
+function deleteComment(event) {
+    let data = event.target.id.split("_"),
+        elemId = data[1],
+        commentId = data[2];
+    entries.find(elem => elem.id == elemId).comments.splice(commentId, 1);
+    drawBlocks();
+}
+
 function addText(elem, entry) {
     elem.childNodes[0].innerText = entry.title;
     elem.childNodes[1].innerText = entry.description;
-    elem.childNodes[2].id = "show" + entry.id;
+    elem.childNodes[2].id = "show_" + entry.id;
     elem.childNodes[5].innerText = "Add comments";
-    elem.childNodes[5].id = "addCom" + entry.id;
+    elem.childNodes[5].id = "addCom_" + entry.id;
     elem.childNodes[5].addEventListener("click", showCommentForm);
     elem.childNodes[6].innerText = "Delete entry";
-    elem.childNodes[6].id = "del" + entry.id;
+    elem.childNodes[6].id = "del_" + entry.id;
     elem.childNodes[6].addEventListener("click", deleteElement);
     return elem
 }
@@ -66,7 +83,7 @@ function addText(elem, entry) {
 function makeShowButton(entry) {
     let showBtn = document.createElement("button");
     showBtn.innerText = "Show comments";
-    showBtn.id = "showBtn" + entry.id;
+    showBtn.id = "showBtn_" + entry.id;
     showBtn.addEventListener("click", showComments);
     return showBtn
 }
@@ -74,14 +91,14 @@ function makeShowButton(entry) {
 function makeForm(entry) {
     let form = document.createElement("form");
     form.style.display = "none";
-    form.id = "form" + entry.id;
+    form.id = "form_" + entry.id;
     let commentField = document.createElement("input");
-    commentField.id = "comfield" + entry.id;
+    commentField.id = "comfield_" + entry.id;
     let label = document.createElement("label");
     let comBtn = document.createElement("button");
     label.innerText = "Add comment";
     comBtn.innerText = "Submit";
-    comBtn.id = "sub" + entry.id;
+    comBtn.id = "sub_" + entry.id;
     comBtn.addEventListener("click", addComment);
     form.appendChild(label);
     form.appendChild(commentField);
@@ -90,28 +107,27 @@ function makeForm(entry) {
 }
 
 function showComments(event) {
-    let id = event.target.id.slice(7);
-    document.querySelector("#com" + id).style.display = "block";
+    let id = event.target.id.split("_")[1];
+    document.querySelector("#com_" + id).style.display = "block";
     event.target.innerText = "Hide comments";
-    event.target.id = "hide" + id;
+    event.target.id = "hide_" + id;
     event.target.removeEventListener("click", showComments);
     event.target.addEventListener("click", hideComments);
 }
 
 function hideComments(event) {
-    let id = event.target.id.slice(4);
-    document.querySelector("#com" + id).style.display = "none";
+    let id = event.target.id.split("_")[1];
+    document.querySelector("#com_" + id).style.display = "none";
     event.target.innerText = "Show comments";
-    event.target.id = "showBtn" + id;
+    event.target.id = "showBtn_" + id;
     event.target.removeEventListener("click", hideComments);
     event.target.addEventListener("click", showComments);
 }
 
 function addComment(event) {
-    let id = event.target.id,
-        index = id.slice(3),
-        commentText = document.querySelector("#comfield" + index).value,
-        entry = entries[entries.findIndex(elem => elem.id == index)];
+    let id = event.target.id.split("_")[1],
+        commentText = document.querySelector("#comfield_" + id).value,
+        entry = entries[entries.findIndex(elem => elem.id == id)];
     if (commentText != "") {
         entry.comments.unshift(commentText);
         localStorage.setItem("entries", JSON.stringify(entries));
@@ -136,13 +152,13 @@ function addEntry() {
 }
 
 function showCommentForm(event) {
-    let elemId = event.target.id.slice(6);
-    document.querySelector("#form" + elemId).style.display = "block";
+    let elemId = event.target.id.split("_")[1];
+    document.querySelector("#form_" + elemId).style.display = "block";
     // entries[index].childNodes[2].style.display = "block";
 }
 
 function deleteElement(event) {
-    let elemId = event.target.id.slice(3),
+    let elemId = event.target.id.split("_")[1],
         index = entries.findIndex(elem => elem.id==elemId);
     entries.splice(index, 1);
     localStorage.setItem("entries", JSON.stringify(entries));
