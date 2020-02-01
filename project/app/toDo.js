@@ -1,9 +1,18 @@
 add.style.display = "none";
-let entries = JSON.parse(localStorage.getItem("entries")) || [],
+let entries = localStorage["entries"]?JSON.parse(localStorage["entries"]):[],
     biggestId = getBiggestId() + 1;
 add_form.addEventListener("click", addEntryForm);
 addBtn.addEventListener("click", addEntry);
 drawBlocks();
+
+class Entry {
+    constructor(id, title, description, comments) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.comments = comments;
+    }
+}
 
 function getBiggestId() {
     let lastElem = entries[0];
@@ -20,7 +29,7 @@ function drawBlocks() {
 
 function addEntryBlock(entry) {
     let row = document.querySelector(".row");
-    let elem = addText(createElemBlock(document.createElement("div"), entry), entry);
+    let elem = createElemBlock(document.createElement("div"), entry);
     row.appendChild(elem);
 }
 
@@ -29,17 +38,22 @@ function addEntryForm() {
 }
 
 function createElemBlock(elem, entry) {
-    elem.classList.add("col-3");
+    elem.classList = ["col-3"];
+    let title = document.createElement("h3"),
+        description = document.createElement("p"),
+        showBtn = document.createElement("p");
+    title.innerText = entry.title;
 
-    elem.appendChild(document.createElement("h3"));
-    elem.appendChild(document.createElement("p"));
-    elem.appendChild(document.createElement("p"));
-    elem.childNodes[2].appendChild(makeShowButton(entry));
-    let comments = document.createElement("div")
+    description.innerText = entry.description;
+
+    showBtn.innerHTML = `<button id="showBtn_${entry.id}">Show comments</button>`;
+    showBtn.id = `show_${entry.id}`;
+    showBtn.children[0].addEventListener("click", showComments);
+
+    let comments = document.createElement("div");
     comments.style.display = "none";
     comments.id = "com_" + entry.id;
     let index = 0;
-    elem.appendChild(makeForm(entry));
     for (let comment of entry.comments) {
         let commentBlock = document.createElement("div");
         let commentText = document.createElement("span");
@@ -53,9 +67,27 @@ function createElemBlock(elem, entry) {
         comments.appendChild(commentBlock);
         index++;
     }
+
+    let addComBtn = document.createElement("button");
+    addComBtn.innerText = "Add comments";
+    addComBtn.id = "addCom_" + entry.id;
+    addComBtn.addEventListener("click", showCommentForm);
+
+    let delComBtn = document.createElement("button");
+    delComBtn.innerText = "Delete entry";
+    delComBtn.id = "del_" + entry.id;
+    delComBtn.addEventListener("click", deleteElement);
+
+    while (elem.firstChild) {
+        elem.removeChild(elem.firstChild);
+    }
+    elem.appendChild(title);
+    elem.appendChild(description);
+    elem.appendChild(showBtn);
     elem.appendChild(comments);
-    elem.appendChild(document.createElement("button"));
-    elem.appendChild(document.createElement("button"));
+    elem.appendChild(makeForm(entry));
+    elem.appendChild(addComBtn);
+    elem.appendChild(delComBtn);
     return elem
 }
 
@@ -67,39 +99,19 @@ function deleteComment(event) {
     drawBlocks();
 }
 
-function addText(elem, entry) {
-    elem.childNodes[0].innerText = entry.title;
-    elem.childNodes[1].innerText = entry.description;
-    elem.childNodes[2].id = "show_" + entry.id;
-    elem.childNodes[5].innerText = "Add comments";
-    elem.childNodes[5].id = "addCom_" + entry.id;
-    elem.childNodes[5].addEventListener("click", showCommentForm);
-    elem.childNodes[6].innerText = "Delete entry";
-    elem.childNodes[6].id = "del_" + entry.id;
-    elem.childNodes[6].addEventListener("click", deleteElement);
-    return elem
-}
-
-function makeShowButton(entry) {
-    let showBtn = document.createElement("button");
-    showBtn.innerText = "Show comments";
-    showBtn.id = "showBtn_" + entry.id;
-    showBtn.addEventListener("click", showComments);
-    return showBtn
-}
-
 function makeForm(entry) {
     let form = document.createElement("form");
     form.style.display = "none";
     form.id = "form_" + entry.id;
+    form.action = "#";
     let commentField = document.createElement("input");
     commentField.id = "comfield_" + entry.id;
     let label = document.createElement("label");
     let comBtn = document.createElement("button");
     label.innerText = "Add comment";
     comBtn.innerText = "Submit";
-    comBtn.id = "sub_" + entry.id;
-    comBtn.addEventListener("click", addComment);
+    comBtn.type = "submit";
+    form.addEventListener("submit", addComment)
     form.appendChild(label);
     form.appendChild(commentField);
     form.appendChild(comBtn);
@@ -131,11 +143,16 @@ function addComment(event) {
     if (commentText != "") {
         entry.comments.unshift(commentText);
         localStorage.setItem("entries", JSON.stringify(entries));
+        let row = document.querySelector(".row");
+        for(let i in entries) {
+            if (entries[i] == entry) {
+                row.children[i] = createElemBlock(row.children[i], entry);
+                break;
+            }
+        }
     } else {
         alert("You must enter some text to leave comment!!!")
     }
-    
-    drawBlocks();
 }
 
 function addEntry() {
@@ -144,7 +161,7 @@ function addEntry() {
     title.value = "";
     description.value = "";
     add.style.display = "none";
-    let newEntry = {id: biggestId, title: titleValue, description: descriptionValue, comments: []};
+    let newEntry = new Entry(biggestId, titleValue, descriptionValue, []);
     entries.unshift(newEntry);
     biggestId++;
     localStorage.setItem("entries", JSON.stringify(entries));
